@@ -92,4 +92,15 @@ router.delete("/user/delete/:id", auth.verifyUser, function (req, res) {
     });
 });
 
+router.get("/profile", auth.verifyUser, function (req, res) {
+  const uid = req.userInfo;
+  User.find({ _id: uid })
+    .then((docs) => {
+      res.json({ data: docs });
+    })
+    .catch((e) => {
+      res.json(e);
+    });
+});
+
 module.exports = router;
