@@ -81,6 +81,15 @@ router.post("/user/login", function (req, res) {
   });
 });
 
-
+router.delete("/user/delete/:id", auth.verifyUser, function (req, res) {
+  const _id = req.userInfo.id;
+  User.findByIdAndDelete(_id)
+    .then(function () {
+      res.json("User Deleted");
+    })
+    .catch(function () {
+      res.json("Error");
+    });
+});
 
 module.exports = router;
