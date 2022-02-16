@@ -103,4 +103,67 @@ router.get("/profile", auth.verifyUser, function (req, res) {
     });
 });
 
+router.put(
+  "/updateprofile",
+  auth.verifyUser,
+  upload.single("thumbnail"),
+  (req, res) => {
+    if (req.file == undefined) {
+      const __id = req.userInfo._id;
+      const fullname = req.body.fullname;
+      const address = req.body.address;
+      const bio = req.body.bio;
+
+      User.updateOne(
+        { _id: __id },
+        {
+          fullname: fullname,
+          address: address,
+          bio: bio,
+        }
+      )
+        .then((err) => {
+          res.json({ message: "Update Successful!", success: true });
+        })
+        .catch((e) => {
+          res.json({ message: "Went wrong!" });
+        });
+    } else {
+      const __id = req.userInfo._id;
+      const fullname = req.body.fullname;
+      const address = req.body.address;
+      const bio = req.body.bio;
+      const profilepic = req.file.filename;
+
+      User.updateOne(
+        { _id: __id },
+        {
+          fullname: fullname,
+          address: address,
+          bio: bio,
+          profilepic: profilepic,
+        }
+      )
+        .then((err) => {
+          res.json({ message: "Update Successful!", success: true });
+        })
+        .catch((e) => {
+          res.json({ message: "Went wrong!", success: false });
+        });
+    }
+  }
+);
+
+router.get("/alluser", (req, res) => {
+  User.find()
+    .then((alluser) => {
+      res.json({
+        alluser,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 module.exports = router;
