@@ -64,4 +64,15 @@ router.get("/singleblog/:bid", async (req, res) => {
     });
 });
 
+router.get("/blog", async (req, res) => {
+  await Post.find({ postedBy: req.userInfo })
+    .populate("postedBy")
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
 module.exports = router;
