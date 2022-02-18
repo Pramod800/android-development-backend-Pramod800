@@ -37,4 +37,31 @@ router.post(
   }
 );
 
+router.get("/allblogs", (req, res) => {
+  Post.find()
+    .populate("postedBy")
+    .then((alluserspost) => {
+      res.json({
+        alluserspost,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+// To get singlepage blog
+router.get("/singleblog/:bid", async (req, res) => {
+  const _id = req.params.bid;
+  await Post.findById(_id)
+    .populate("Comments.postedBy")
+    .populate("postedBy")
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
 module.exports = router;
