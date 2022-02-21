@@ -75,4 +75,18 @@ router.get("/blog", async (req, res) => {
     });
 });
 
+router.post("/comment", auth.verifyUser, (req, res) => {
+  const comment = { Text: req.body.commentText, postedBy: req.userInfo._id };
+  Post.findByIdAndUpdate(req.body.blogId, {
+    $push: { Comments: comment },
+  })
+    .populate("Comments.postedBy", "username")
+    .then((docs) => {
+      res.json({ success: true, commentcount: docs.Comments.length });
+    })
+    .catch((e) => {
+      res.json({ message: e, success: false });
+    });
+});
+
 module.exports = router;
