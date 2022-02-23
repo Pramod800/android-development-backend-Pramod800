@@ -89,4 +89,19 @@ router.post("/comment", auth.verifyUser, (req, res) => {
     });
 });
 
+router.get("/myblogs", auth.verifyUser, async (req, res) => {
+  await Post.find({
+    postedBy: req.userInfo,
+  })
+    .then((myposts) => {
+      res.json({
+        myposts,
+        count: myposts.length,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 module.exports = router;
