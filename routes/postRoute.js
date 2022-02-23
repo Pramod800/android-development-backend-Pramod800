@@ -104,4 +104,45 @@ router.get("/myblogs", auth.verifyUser, async (req, res) => {
     });
 });
 
+router.put(
+  "/blog/update",
+  // auth.verifyUser,
+  upload.single("thumbnail"),
+  async function (req, res) {
+    const _id = req.body.bid;
+    // const userId = req.userInfo;
+    const title = req.body.title;
+    const subtitle = req.body.subtitle;
+    const description = req.body.description;
+    const thumbnail = req.file.filename;
+    await Post.findOneAndUpdate(
+      {
+        _id,
+        // userId: userId,
+      },
+      {
+        title: title,
+        subtitle: subtitle,
+        description: description,
+        thumbnail: thumbnail,
+      },
+      {
+        new: true,
+      }
+    )
+      .then((result) => {
+        res.json({
+          message: "succesfully updated post",
+          result,
+          success: true,
+        });
+      })
+      .catch(() => {
+        res.json({
+          msg: "Failed to update the post",
+        });
+      });
+  }
+);
+
 module.exports = router;
