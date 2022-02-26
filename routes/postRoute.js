@@ -145,4 +145,21 @@ router.put(
   }
 );
 
+router.delete("/post/delete/:bid", auth.verifyUser, async function (req, res) {
+  const _id = req.params.bid;
+  await Post.findByIdAndDelete(_id)
+    .then((result) => {
+      res.status(200).json({
+        message: "succesfully deleted post",
+        result,
+        success: true,
+      });
+    })
+    .catch(() => {
+      res.json({
+        message: "Error",
+      });
+    });
+});
+
 module.exports = router;
