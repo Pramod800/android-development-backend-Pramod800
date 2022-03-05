@@ -18,25 +18,10 @@ router.post("/user/register", function (req, res) {
     const password = req.body.password;
     bcryptjs.hash(password, 10, function (e, hashed_pw) {
       const email = req.body.email;
-      const fullname = req.body.fullname;
-      const address = req.body.address;
-      const bio = req.body.bio;
-      const profilepic = req.file.filename;
-      var profilePic;
-      if (req.file.filename == undefined) {
-        profilePic = "";
-      } else {
-        profilePic = req.file.filename;
-      }
-
       const userdata = new User({
         username: username,
         password: hashed_pw,
         email: email,
-        fullname: fullname,
-        address: address,
-        bio: bio,
-        profilepic: profilePic,
       });
 
       userdata
@@ -92,9 +77,9 @@ router.delete("/user/delete/:id", auth.verifyUser, function (req, res) {
     });
 });
 
-router.get("/profile", auth.verifyUser, function (req, res) {
-  const uid = req.userInfo;
-  User.find({ _id: uid })
+router.get("/userprofile", auth.verifyUser, function (req, res) {
+  const uid = req.userInfo._id;
+  User.findOne({ _id: uid })
     .then((docs) => {
       res.json({ data: docs });
     })
@@ -111,6 +96,7 @@ router.put(
     if (req.file == undefined) {
       const __id = req.userInfo._id;
       const fullname = req.body.fullname;
+      const email = req.body.email;
       const address = req.body.address;
       const bio = req.body.bio;
 
@@ -120,6 +106,7 @@ router.put(
           fullname: fullname,
           address: address,
           bio: bio,
+          email: email,
         }
       )
         .then((err) => {
@@ -133,6 +120,7 @@ router.put(
       const fullname = req.body.fullname;
       const address = req.body.address;
       const bio = req.body.bio;
+      const email = req.body.email;
       const profilepic = req.file.filename;
 
       User.updateOne(
@@ -141,6 +129,7 @@ router.put(
           fullname: fullname,
           address: address,
           bio: bio,
+          email: email,
           profilepic: profilepic,
         }
       )

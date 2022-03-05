@@ -11,12 +11,9 @@ const User = mongoose.model("User", {
   password: {
     type: String,
   },
-  firstname: {
+  fullname: {
     type: String,
-  },
-
-  lastname: {
-    type: String,
+    default: "Please set your fullname first",
   },
 
   joined: {
@@ -26,14 +23,17 @@ const User = mongoose.model("User", {
 
   bio: {
     type: String,
+    default: "You dont have bio yet",
   },
 
   address: {
     type: String,
+    default: "You dont have bio yet",
   },
 
   profilepic: {
     type: String,
+    default:""
   },
 });
 module.exports = User;

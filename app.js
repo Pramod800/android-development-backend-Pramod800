@@ -15,6 +15,5 @@ app.use(userroute);
 const postroute = require("./routes/postRoute");
 app.use(postroute);
 
-
 require("./databases/db");
 app.listen("90");
