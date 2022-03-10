@@ -118,7 +118,6 @@ router.put(
     await Post.findOneAndUpdate(
       {
         _id,
-        // userId: userId,
       },
       {
         title: title,

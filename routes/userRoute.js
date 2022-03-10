@@ -54,7 +54,6 @@ router.post("/user/login", function (req, res) {
       if (result === false) {
         return res.json({ message: "Password Incorrect" });
       }
-      // ticket generate
       const token = jwt.sign({ userId: userdata._id }, "anysecretkey");
       res.json({
         token: token,
